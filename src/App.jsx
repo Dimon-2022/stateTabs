@@ -74,6 +74,14 @@ export default function App() {
     setActiveTab(tabId);
   }
 
+  function decreaseTab() {
+    setActiveTab((prev) => (prev === 1 ? 1 : prev - 1));
+  }
+
+  function increaseTab(){
+    setActiveTab(prev=>prev === tabData.length ? tabData.length : prev + 1);
+  }
+
   return (
     <>
       {!isOpen ? (
@@ -112,8 +120,8 @@ export default function App() {
           <CardContainer cards={tabData[activeTab - 1]} />
 
           <div className="navigation-buttons">
-            <button>&lt; Previous</button>
-            <button>Next &gt;</button>
+            <button onClick={decreaseTab}>&lt; Previous</button>
+            <button onClick={increaseTab}>Next &gt;</button>
           </div>
 
           <Footer />

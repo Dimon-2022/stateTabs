@@ -1,7 +1,8 @@
+import { useState } from "react";
 import "./index.css";
 
 //Rus
-// 1 - Создайте состояние isOpen для управления открытием и закрытием приложения. Интерфейс скрывается при нажатии на крестик и отображается при нажатии на кнопку "Начать".
+// 1 - Создайте состояние isOpen для управления открытием и закрытием приложения. Интерфейс скрывается при нажатии на крестик и отображается при нажатии на кнопку "Начать". +++
 // 2 - Реализуйте функционал отображения карточек в зависимости от активного таба. Переключать табы можно как нажатием на кнопки "Prev" и "Next", так и нажатием на сам таб.
 
 //Eng
@@ -61,29 +62,63 @@ const tabData = [
 ];
 
 export default function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(1);
+
+  function toggleApp() {
+    setIsOpen((prev) => !prev);
+  }
+
+  function showTab(e) {
+    const tabId = Number(e.target.getAttribute("data-tab"));
+    setActiveTab(tabId);
+  }
+
   return (
     <>
-      {/*<button >Start</button>*/}
+      {!isOpen ? (
+        <button onClick={toggleApp}>Start</button>
+      ) : (
+        <div className="app">
+          <span className="close" onClick={toggleApp}>
+            &times;
+          </span>
+          <h1>State Tabs Card Display</h1>
 
-      <div className="app">
-        <span className="close">&times;</span>
-        <h1>State Tabs Card Display</h1>
+          <div className="tab-buttons">
+            <button
+              className={`tab-button ${activeTab === 1 && "active"}`}
+              data-tab={1}
+              onClick={showTab}
+            >
+              Tab 1
+            </button>
+            <button
+              className={`tab-button ${activeTab === 2 && "active"}`}
+              data-tab={2}
+              onClick={showTab}
+            >
+              Tab 2
+            </button>
+            <button
+              className={`tab-button ${activeTab === 3 && "active"}`}
+              data-tab={3}
+              onClick={showTab}
+            >
+              Tab 3
+            </button>
+          </div>
 
-        <div className="tab-buttons">
-          <button className="tab-button  active">Tab 1</button>
-          <button className="tab-button">Tab 2</button>
-          <button className="tab-button">Tab 3</button>
+          <CardContainer cards={tabData[activeTab - 1]} />
+
+          <div className="navigation-buttons">
+            <button>&lt; Previous</button>
+            <button>Next &gt;</button>
+          </div>
+
+          <Footer />
         </div>
-
-        <CardContainer cards={tabData[0]} />
-
-        <div className="navigation-buttons">
-          <button>&lt; Previous</button>
-          <button>Next &gt;</button>
-        </div>
-
-        <Footer />
-      </div>
+      )}
     </>
   );
 }
